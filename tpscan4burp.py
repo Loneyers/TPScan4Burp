@@ -215,6 +215,11 @@ class tpscan4burp(IScannerCheck):
             return []
         except:
             pass
+
+    def fetchURL(self, basePair, url):
+        path = helpers.analyzeRequest(basePair).getUrl().getPath()
+        newReq = safe_bytes_to_string(basePair.getRequest()).replace(path, url, 1)
+        return callbacks.makeHttpRequest(basePair.getHttpService(), newReq)
 class CustomScanIssue(IScanIssue):
     def __init__(self, httpService, url, httpMessages, name, detail, confidence, severity):
         self.HttpService = httpService
